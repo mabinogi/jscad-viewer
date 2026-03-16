@@ -19,6 +19,6 @@ export const getParameterDefinitions = () => ([
   }
 ])
 
-export const main = (params: { color: [number, number, number], size: number }) => {
+export const main = (params: { color: [number, number, number, number], size: number }) => {
   return colorize(params.color, cuboid({ size: [params.size, params.size, params.size] }));
 }
