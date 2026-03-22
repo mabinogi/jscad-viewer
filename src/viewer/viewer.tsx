@@ -1,7 +1,10 @@
 import { useRef } from 'react';
-import * as design from '../designs/box';
-import './viewer.css';
+import { BoxIcon, Cone } from 'lucide-react';
+import { Box, Button, Float, IconButton, SimpleGrid } from '@chakra-ui/react';
 import { useViewer } from './use-viewer';
+import * as design from '../designs/box';
+import { Blank, ProjectionButton } from './projection-button';
+import { CameraControls } from './camera-controls';
 
 export const Viewer = () => {
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -18,19 +21,24 @@ export const Viewer = () => {
     }
   });
 
-  return <div className="viewer">
-    <div className="menu">
-      <button type="button" onClick={() => toPresetView('top')}>Top View</button>
-      <button type="button" onClick={() => toPresetView('bottom')}>Bottom View</button>
-      <button type="button" onClick={() => toPresetView('left')}>Left View</button>
-      <button type="button" onClick={() => toPresetView('right')}>Right View</button>
-      <button type="button" onClick={() => toPresetView('front')}>Front View</button>
-      <button type="button" onClick={() => toPresetView('back')}>Back View</button>
-    </div>
-    <div className="menu"><p>Projection: {projectionType}</p></div>
-    <div className="menu">
-      <button type="button" onClick={toggleProjection}>Toggle Projection</button>
-    </div>
-    <div ref={viewerRef} className="target"></div>
-  </div>
+  return <Box
+    position="relative"
+    width="100vw"
+    height="100vh"
+    display="flex"
+    flexDirection="column"
+    overflow="hidden"
+    bgColor="bg"
+    padding={2}
+    >
+    <CameraControls switchProjection={toPresetView} toggleProjection={toggleProjection} projectionType={projectionType} />
+    <Box
+      position="absolute"
+      top={0}
+      left={0}
+      width="100%"
+      height="100%"
+      ref={viewerRef}>
+    </Box>
+  </Box>
 }
