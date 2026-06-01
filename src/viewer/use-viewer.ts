@@ -44,6 +44,10 @@ type ViewerControls = {
   toggleProjection: () => void;
 }
 
+const getEntitiesFromDesign = (design: Geom3 | Geom3[]) => {
+  return entitiesFromSolids({}, ...(Array.isArray(design) ? design : [design]));
+}
+
 export const useViewer = ({
   viewerRef,
   design
@@ -53,6 +57,7 @@ export const useViewer = ({
 }) => {
   const updateViewRef = useRef(true);
   const mountedRef = useRef(false);
+  const entitiesRef = useRef<ReturnType<typeof entitiesFromSolids>>(getEntitiesFromDesign(design));
   const [uiState, setUiState] = useState({
     gridOn: true,
     axisOn: true,
@@ -63,9 +68,11 @@ export const useViewer = ({
     toggleProjection: () => { },
   });
 
-  const entities = useMemo(() =>
-    entitiesFromSolids({}, ...(Array.isArray(design) ? design : [design])),
-    [design]);
+  useEffect(() => {
+    console.info('Design changed, updating entities');
+    entitiesRef.current = getEntitiesFromDesign(design);
+    updateViewRef.current = true;
+  }, [design]);
 
   useEffect(() => {
     console.info('In use effect')
@@ -142,7 +149,7 @@ export const useViewer = ({
       entities: [
         axisOptions(),
         gridOptions(),
-        ...entities,
+        ...entitiesRef.current,
       ]
     } as const);
 
@@ -281,7 +288,7 @@ export const useViewer = ({
     viewerRef.current.onpointerdown = downHandler;
     viewerRef.current.onpointerup = upHandler;
     viewerRef.current.onwheel = wheelHandler;
-``
+
     const toPresetView = (view: StaticView) => {
       console.info('Moving to view', view);
       Object.assign(state.camera, cameras.camera.toPresetView(view, state));

@@ -1,8 +1,7 @@
-import { Box, IconButton, SimpleGrid } from "@chakra-ui/react";
+import { IconButton, SimpleGrid } from "@chakra-ui/react";
 import { Blank, ProjectionButton, type View } from "./projection-button";
 import { BoxIcon } from "lucide-react";
-
-
+import { Toolbox } from "@/components/toolbox/toolbox";
 
 type CameraControlsProps = {
   switchProjection: (view: View) => void;
@@ -11,13 +10,7 @@ type CameraControlsProps = {
 }
 
 export const CameraControls = ({ switchProjection, toggleProjection, projectionType }: CameraControlsProps) =>
-  <Box
-    borderRadius="md"
-    backgroundColor="bg.muted"
-    padding="2"
-    zIndex={1}
-    alignSelf="flex-end"
-  >
+  <Toolbox title="Camera Controls">
     <SimpleGrid columns={3} gap={2}>
       <Blank />
       <ProjectionButton switchFunction={switchProjection} view="front" />
@@ -32,4 +25,4 @@ export const CameraControls = ({ switchProjection, toggleProjection, projectionT
       <ProjectionButton switchFunction={switchProjection} view="bottom" />
       <Blank />
     </SimpleGrid>
-  </Box>
+  </Toolbox>

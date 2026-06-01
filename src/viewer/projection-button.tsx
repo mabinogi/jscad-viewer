@@ -18,7 +18,7 @@ const IconMap: Record<View, React.ReactNode> = {
 };
 
 export const ProjectionButton = ({ switchFunction, view }: ProjectionButtonProps) =>
-  <IconButton aria-label={`Switch to ${view} view`} title={view} onClick={() => switchFunction(view)}>
+  <IconButton variant="surface" aria-label={`Switch to ${view} view`} title={view} onClick={() => switchFunction(view)}>
     {IconMap[view]}
   </IconButton>
 
